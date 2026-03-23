@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-6" style="color:var(--color-text);">Create an account</h1>
+
+    <form method="post" novalidate aria-label="Registration form">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div role="alert" class="alert alert-error mb-4">
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% for field in form %}
+      <div class="mb-4">
+        <label
+          for="{{ field.id_for_label }}"
+          class="block text-sm font-medium mb-1"
+          style="color:var(--color-text);"
+        >
+          {{ field.label }}
+          {% if field.field.required %}
+          <span aria-hidden="true" style="color:var(--color-danger);">*</span>
+          {% endif %}
+        </label>
+        {{ field }}
+        {% if field.help_text %}
+        <p id="{{ field.id_for_label }}-hint" class="text-xs mt-1" style="color:var(--color-text-muted);">
+          {{ field.help_text }}
+        </p>
+        {% endif %}
+        {% if field.errors %}
+        <ul role="alert" class="mt-1 list-none p-0 m-0">
+          {% for error in field.errors %}
+          <li class="text-xs" style="color:var(--color-danger);">{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary w-full mt-2">
+        Create account
+      </button>
+    </form>
+
+    <p class="text-sm text-center mt-4" style="color:var(--color-text-muted);">
+      Already have an account?
+      <a href="{% url 'login' %}" style="color:var(--color-primary);">Log in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

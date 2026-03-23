@@ -1,0 +1,178 @@
+[
+  {
+    "model": "bookings.resourcecategory",
+    "pk": 1,
+    "fields": {
+      "name": "Meeting Room",
+      "description": "Rooms equipped for meetings, presentations, and video calls.",
+      "icon": "🏢"
+    }
+  },
+  {
+    "model": "bookings.resourcecategory",
+    "pk": 2,
+    "fields": {
+      "name": "Laboratory",
+      "description": "Specialised lab spaces with scientific equipment.",
+      "icon": "🔬"
+    }
+  },
+  {
+    "model": "bookings.resourcecategory",
+    "pk": 3,
+    "fields": {
+      "name": "Equipment",
+      "description": "Portable equipment available for loan.",
+      "icon": "🎥"
+    }
+  },
+  {
+    "model": "bookings.resourcecategory",
+    "pk": 4,
+    "fields": {
+      "name": "Sports Facility",
+      "description": "Gyms, courts, and outdoor sports areas.",
+      "icon": "🏋️"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 1,
+    "fields": {
+      "name": "Boardroom Alpha",
+      "description": "Large boardroom with 4K display, video conferencing, and whiteboard. Seats up to 20 people.",
+      "location": "Building A, Floor 3",
+      "capacity": 20,
+      "category": 1,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 2,
+    "fields": {
+      "name": "Focus Room 101",
+      "description": "Small quiet room ideal for 1-on-1 meetings or focused work. Seats 4.",
+      "location": "Building A, Floor 1",
+      "capacity": 4,
+      "category": 1,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 3,
+    "fields": {
+      "name": "Innovation Hub",
+      "description": "Open collaboration space with movable furniture, writable walls, and maker tools.",
+      "location": "Building B, Ground Floor",
+      "capacity": 30,
+      "category": 1,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 4,
+    "fields": {
+      "name": "Chemistry Lab A",
+      "description": "Fully equipped chemistry laboratory with fume hoods and safety equipment.",
+      "location": "Science Block, Floor 2",
+      "capacity": 16,
+      "category": 2,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 5,
+    "fields": {
+      "name": "Computer Lab",
+      "description": "30-seat computer lab with high-performance workstations and dual monitors.",
+      "location": "IT Building, Floor 1",
+      "capacity": 30,
+      "category": 2,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 6,
+    "fields": {
+      "name": "4K Video Camera Kit",
+      "description": "Sony FX3 cinema camera with tripod, lenses, and lighting kit.",
+      "location": "Media Centre, Room 5",
+      "capacity": 1,
+      "category": 3,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 7,
+    "fields": {
+      "name": "Portable Projector",
+      "description": "Full HD portable projector with HDMI and wireless screen mirroring.",
+      "location": "AV Store, Building A",
+      "capacity": 1,
+      "category": 3,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 8,
+    "fields": {
+      "name": "Basketball Court",
+      "description": "Full-size indoor basketball court. Available for team practice and casual play.",
+      "location": "Sports Complex",
+      "capacity": 20,
+      "category": 4,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 9,
+    "fields": {
+      "name": "Fitness Studio",
+      "description": "Multipurpose fitness studio with mirrors, sound system, and exercise mats.",
+      "location": "Sports Complex, Room 2",
+      "capacity": 25,
+      "category": 4,
+      "is_active": true,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-01-01T08:00:00Z"
+    }
+  },
+  {
+    "model": "bookings.resource",
+    "pk": 10,
+    "fields": {
+      "name": "Old Seminar Room",
+      "description": "Legacy seminar room — being refurbished.",
+      "location": "Building C, Floor 2",
+      "capacity": 15,
+      "category": 1,
+      "is_active": false,
+      "created_at": "2025-01-01T08:00:00Z",
+      "updated_at": "2025-06-01T08:00:00Z"
+    }
+  }
+]

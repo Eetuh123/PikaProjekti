@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="{% block meta_description %}Book resources quickly and easily.{% endblock %}" />
+  <title>{% block title %}BookIt{% endblock %} — BookIt</title>
+
+  <!-- Tailwind CSS via CDN (Play CDN for development) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['selector', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: 'var(--color-primary)',
+              hover: 'var(--color-primary-hover)',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Theme CSS (CSS variables + custom classes) -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
+
+  <!-- Theme script runs before paint to avoid flash -->
+  <script src="{% static 'js/theme.js' %}"></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Skip navigation link (WCAG 2.1 AA) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ── Navigation ──────────────────────────────────────────────────── -->
+  <header role="banner" style="background-color:var(--color-surface); border-bottom:1px solid var(--color-border);">
+    <nav
+      aria-label="Main navigation"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
+    >
+      <!-- Logo / brand -->
+      <a
+        href="{% url 'home' %}"
+        class="text-xl font-bold"
+        style="color:var(--color-primary);"
+        aria-label="BookIt home"
+      >
+        📅 BookIt
+      </a>
+
+      <!-- Desktop nav links -->
+      <ul class="hidden sm:flex items-center gap-1 list-none m-0 p-0" role="list">
+        <li>
+          <a href="{% url 'resource_list' %}" class="nav-link"
+            {% if request.resolver_match.url_name == 'resource_list' %}aria-current="page"{% endif %}>
+            Resources
+          </a>
+        </li>
+        {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'booking_list' %}" class="nav-link"
+            {% if request.resolver_match.url_name == 'booking_list' %}aria-current="page"{% endif %}>
+            My Bookings
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'booking_create' %}" class="nav-link"
+            {% if request.resolver_match.url_name == 'booking_create' %}aria-current="page"{% endif %}>
+            New Booking
+          </a>
+        </li>
+        {% if user.is_staff %}
+        <li>
+          <a href="{% url 'admin:index' %}" class="nav-link" target="_blank" rel="noopener">
+            Admin
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
+      </ul>
+
+      <!-- Right-side controls -->
+      <div class="flex items-center gap-2">
+        <!-- Theme toggle -->
+        <button
+          id="theme-toggle"
+          type="button"
+          class="btn btn-secondary px-2 py-1 text-base"
+          aria-label="Switch to dark mode"
+          aria-pressed="false"
+        >
+          <span data-theme-icon aria-hidden="true">🌙</span>
+        </button>
+
+        {% if user.is_authenticated %}
+          <span class="hidden sm:inline text-sm" style="color:var(--color-text-muted);">
+            {{ user.username }}
+          </span>
+          <form method="post" action="{% url 'logout' %}" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary text-sm">Log out</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-secondary text-sm">Log in</a>
+          <a href="{% url 'register' %}" class="btn btn-primary text-sm">Register</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Mobile nav (simple stacked links) -->
+    <div class="sm:hidden border-t" style="border-color:var(--color-border); background-color:var(--color-surface);">
+      <ul class="flex flex-col px-4 py-2 gap-1 list-none m-0 p-0" role="list">
+        <li><a href="{% url 'resource_list' %}" class="nav-link block py-2">Resources</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'booking_list' %}" class="nav-link block py-2">My Bookings</a></li>
+        <li><a href="{% url 'booking_create' %}" class="nav-link block py-2">New Booking</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </header>
+
+  <!-- ── Flash messages ─────────────────────────────────────────────── -->
+  {% if messages %}
+  <div
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4"
+  >
+    {% for message in messages %}
+    <div
+      class="alert alert-{{ message.tags|default:'info' }}"
+      role="alert"
+    >
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- ── Main content ───────────────────────────────────────────────── -->
+  <main id="main-content" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────────────── -->
+  <footer
+    role="contentinfo"
+    class="text-center text-sm py-6"
+    style="color:var(--color-text-muted); border-top:1px solid var(--color-border); background-color:var(--color-surface);"
+  >
+    <p>© 2025 BookIt — Resource Booking System</p>
+  </footer>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

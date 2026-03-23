@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}{{ resource.name }}{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="mb-6">
+  <ol class="flex items-center gap-2 text-sm list-none p-0 m-0" style="color:var(--color-text-muted);">
+    <li><a href="{% url 'resource_list' %}" style="color:var(--color-primary);">Resources</a></li>
+    <li aria-hidden="true">/</li>
+    <li aria-current="page" style="color:var(--color-text);">{{ resource.name }}</li>
+  </ol>
+</nav>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Resource info -->
+  <div class="lg:col-span-2">
+    <div class="card mb-6">
+      <div class="flex items-start justify-between gap-4 mb-4">
+        <h1 class="text-2xl font-bold" style="color:var(--color-text);">{{ resource.name }}</h1>
+        {% if resource.category %}
+        <span class="text-sm px-3 py-1 rounded-full shrink-0" style="background-color:var(--color-surface-alt); color:var(--color-text-muted);">
+          {{ resource.category.icon|default:"" }} {{ resource.category.name }}
+        </span>
+        {% endif %}
+      </div>
+
+      <dl class="grid grid-cols-2 gap-4 mb-4 text-sm">
+        {% if resource.location %}
+        <div>
+          <dt class="font-medium" style="color:var(--color-text-muted);">Location</dt>
+          <dd style="color:var(--color-text);">📍 {{ resource.location }}</dd>
+        </div>
+        {% endif %}
+        <div>
+          <dt class="font-medium" style="color:var(--color-text-muted);">Capacity</dt>
+          <dd style="color:var(--color-text);">👥 {{ resource.capacity }} person{{ resource.capacity|pluralize }}</dd>
+        </div>
+      </dl>
+
+      {% if resource.description %}
+      <p class="text-sm" style="color:var(--color-text-muted);">{{ resource.description }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Upcoming bookings -->
+    <section aria-labelledby="upcoming-heading">
+      <h2 id="upcoming-heading" class="text-lg font-semibold mb-4" style="color:var(--color-text);">
+        Upcoming bookings
+      </h2>
+      {% if upcoming_bookings %}
+      <ul class="flex flex-col gap-3 list-none p-0 m-0" role="list">
+        {% for booking in upcoming_bookings %}
+        <li class="card flex items-center justify-between gap-4 py-3">
+          <div>
+            <p class="font-medium text-sm" style="color:var(--color-text);">{{ booking.title }}</p>
+            <p class="text-xs" style="color:var(--color-text-muted);">
+              <time datetime="{{ booking.start_time|date:'c' }}">{{ booking.start_time|date:"D, d M Y H:i" }}</time>
+              –
+              <time datetime="{{ booking.end_time|date:'c' }}">{{ booking.end_time|date:"H:i" }}</time>
+            </p>
+          </div>
+          <span class="badge badge-confirmed">Booked</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-sm" style="color:var(--color-text-muted);">No upcoming bookings — this resource is available!</p>
+      {% endif %}
+    </section>
+  </div>
+
+  <!-- Booking CTA -->
+  <aside aria-label="Book this resource">
+    <div class="card sticky top-4">
+      <h2 class="text-lg font-semibold mb-4" style="color:var(--color-text);">Book this resource</h2>
+      {% if user.is_authenticated %}
+      <a
+        href="{% url 'booking_create' %}?resource={{ resource.pk }}"
+        class="btn btn-primary w-full text-center"
+      >
+        ＋ Make a booking
+      </a>
+      {% else %}
+      <p class="text-sm mb-4" style="color:var(--color-text-muted);">
+        You need to be logged in to make a booking.
+      </p>
+      <a href="{% url 'login' %}?next={% url 'resource_detail' resource.pk %}" class="btn btn-primary w-full text-center">
+        Log in to book
+      </a>
+      <a href="{% url 'register' %}" class="btn btn-secondary w-full text-center mt-2">
+        Create an account
+      </a>
+      {% endif %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

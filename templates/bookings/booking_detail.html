@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}{{ booking.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <!-- Breadcrumb -->
+  <nav aria-label="Breadcrumb" class="mb-6">
+    <ol class="flex items-center gap-2 text-sm list-none p-0 m-0" style="color:var(--color-text-muted);">
+      <li><a href="{% url 'booking_list' %}" style="color:var(--color-primary);">My Bookings</a></li>
+      <li aria-hidden="true">/</li>
+      <li aria-current="page" style="color:var(--color-text);">{{ booking.title }}</li>
+    </ol>
+  </nav>
+
+  <div class="card">
+    <div class="flex items-start justify-between gap-4 mb-6">
+      <h1 class="text-2xl font-bold" style="color:var(--color-text);">{{ booking.title }}</h1>
+      <span class="badge badge-{{ booking.status }} shrink-0">{{ booking.get_status_display }}</span>
+    </div>
+
+    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 text-sm">
+      <div>
+        <dt class="font-medium mb-1" style="color:var(--color-text-muted);">Resource</dt>
+        <dd style="color:var(--color-text);">
+          <a href="{% url 'resource_detail' booking.resource.pk %}" style="color:var(--color-primary);">
+            {{ booking.resource.name }}
+          </a>
+        </dd>
+      </div>
+
+      {% if booking.resource.location %}
+      <div>
+        <dt class="font-medium mb-1" style="color:var(--color-text-muted);">Location</dt>
+        <dd style="color:var(--color-text);">📍 {{ booking.resource.location }}</dd>
+      </div>
+      {% endif %}
+
+      <div>
+        <dt class="font-medium mb-1" style="color:var(--color-text-muted);">Start time</dt>
+        <dd style="color:var(--color-text);">
+          <time datetime="{{ booking.start_time|date:'c' }}">
+            {{ booking.start_time|date:"l, d F Y" }} at {{ booking.start_time|date:"H:i" }}
+          </time>
+        </dd>
+      </div>
+
+      <div>
+        <dt class="font-medium mb-1" style="color:var(--color-text-muted);">End time</dt>
+        <dd style="color:var(--color-text);">
+          <time datetime="{{ booking.end_time|date:'c' }}">
+            {{ booking.end_time|date:"l, d F Y" }} at {{ booking.end_time|date:"H:i" }}
+          </time>
+        </dd>
+      </div>
+
+      <div>
+        <dt class="font-medium mb-1" style="color:var(--color-text-muted);">Duration</dt>
+        <dd style="color:var(--color-text);">{{ booking.duration_hours }} hour{{ booking.duration_hours|pluralize }}</dd>
+      </div>
+
+      <div>
+        <dt class="font-medium mb-1" style="color:var(--color-text-muted);">Booked on</dt>
+        <dd style="color:var(--color-text);">
+          <time datetime="{{ booking.created_at|date:'c' }}">{{ booking.created_at|date:"d M Y H:i" }}</time>
+        </dd>
+      </div>
+    </dl>
+
+    {% if booking.notes %}
+    <div class="mb-6 p-4 rounded-md" style="background-color:var(--color-surface-alt);">
+      <h2 class="text-sm font-medium mb-2" style="color:var(--color-text-muted);">Notes</h2>
+      <p class="text-sm" style="color:var(--color-text);">{{ booking.notes }}</p>
+    </div>
+    {% endif %}
+
+    <div class="flex gap-3 pt-4" style="border-top:1px solid var(--color-border);">
+      <a href="{% url 'booking_list' %}" class="btn btn-secondary">
+        ← Back to bookings
+      </a>
+      {% if booking.status == 'confirmed' and booking.is_upcoming %}
+      <a
+        href="{% url 'booking_cancel' booking.pk %}"
+        class="btn btn-danger"
+        aria-label="Cancel this booking"
+      >
+        Cancel booking
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

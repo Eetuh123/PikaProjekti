@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+  <h1 class="text-3xl font-bold" style="color:var(--color-text);">My Bookings</h1>
+  <a href="{% url 'booking_create' %}" class="btn btn-primary">＋ New Booking</a>
+</div>
+
+<!-- Status filter -->
+<nav aria-label="Filter bookings by status" class="mb-6">
+  <ul class="flex flex-wrap gap-2 list-none p-0 m-0" role="list">
+    <li>
+      <a
+        href="{% url 'booking_list' %}"
+        class="btn btn-secondary text-xs px-3 py-1"
+        {% if not status_filter %}aria-current="true"{% endif %}
+        style="{% if not status_filter %}outline:2px solid var(--color-primary);{% endif %}"
+      >
+        All
+      </a>
+    </li>
+    {% for value, label in status_choices %}
+    <li>
+      <a
+        href="{% url 'booking_list' %}?status={{ value }}"
+        class="btn btn-secondary text-xs px-3 py-1"
+        {% if status_filter == value %}aria-current="true"{% endif %}
+        style="{% if status_filter == value %}outline:2px solid var(--color-primary);{% endif %}"
+      >
+        {{ label }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+{% if bookings %}
+<ul class="flex flex-col gap-4 list-none p-0 m-0" role="list" aria-label="Your bookings">
+  {% for booking in bookings %}
+  <li>
+    <article
+      class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      aria-labelledby="booking-{{ booking.pk }}-title"
+    >
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-3 mb-1 flex-wrap">
+          <h2
+            id="booking-{{ booking.pk }}-title"
+            class="font-semibold text-base truncate"
+            style="color:var(--color-text);"
+          >
+            {{ booking.title }}
+          </h2>
+          <span class="badge badge-{{ booking.status }}">{{ booking.get_status_display }}</span>
+        </div>
+        <p class="text-sm mb-1" style="color:var(--color-text-muted);">
+          <span class="font-medium" style="color:var(--color-text);">{{ booking.resource.name }}</span>
+          {% if booking.resource.location %}
+          · 📍 {{ booking.resource.location }}
+          {% endif %}
+        </p>
+        <p class="text-xs" style="color:var(--color-text-muted);">
+          <time datetime="{{ booking.start_time|date:'c' }}">{{ booking.start_time|date:"D, d M Y H:i" }}</time>
+          –
+          <time datetime="{{ booking.end_time|date:'c' }}">{{ booking.end_time|date:"H:i" }}</time>
+          <span class="ml-2">({{ booking.duration_hours }}h)</span>
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="{% url 'booking_detail' booking.pk %}"
+          class="btn btn-secondary text-xs px-3 py-1"
+          aria-label="View details for {{ booking.title }}"
+        >
+          Details
+        </a>
+        {% if booking.status == 'confirmed' and booking.is_upcoming %}
+        <a
+          href="{% url 'booking_cancel' booking.pk %}"
+          class="btn btn-danger text-xs px-3 py-1"
+          aria-label="Cancel booking: {{ booking.title }}"
+        >
+          Cancel
+        </a>
+        {% endif %}
+      </div>
+    </article>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="text-center py-16" role="status">
+  <p class="text-4xl mb-4" aria-hidden="true">📅</p>
+  <p class="text-lg font-semibold mb-2" style="color:var(--color-text);">No bookings yet</p>
+  <p class="text-sm mb-6" style="color:var(--color-text-muted);">
+    {% if status_filter %}
+      No {{ status_filter }} bookings found.
+    {% else %}
+      You haven't made any bookings yet.
+    {% endif %}
+  </p>
+  <a href="{% url 'booking_create' %}" class="btn btn-primary">Make your first booking</a>
+</div>
+{% endif %}
+{% endblock %}

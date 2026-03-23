@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Cancel Booking{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto">
+  <div class="card">
+    <div class="text-center mb-6">
+      <p class="text-5xl mb-4" aria-hidden="true">⚠️</p>
+      <h1 class="text-2xl font-bold mb-2" style="color:var(--color-text);">Cancel this booking?</h1>
+      <p class="text-sm" style="color:var(--color-text-muted);">This action cannot be undone.</p>
+    </div>
+
+    <div class="p-4 rounded-md mb-6" style="background-color:var(--color-surface-alt);">
+      <dl class="text-sm space-y-2">
+        <div class="flex justify-between gap-4">
+          <dt class="font-medium" style="color:var(--color-text-muted);">Booking</dt>
+          <dd class="font-semibold text-right" style="color:var(--color-text);">{{ booking.title }}</dd>
+        </div>
+        <div class="flex justify-between gap-4">
+          <dt class="font-medium" style="color:var(--color-text-muted);">Resource</dt>
+          <dd class="text-right" style="color:var(--color-text);">{{ booking.resource.name }}</dd>
+        </div>
+        <div class="flex justify-between gap-4">
+          <dt class="font-medium" style="color:var(--color-text-muted);">Date &amp; time</dt>
+          <dd class="text-right" style="color:var(--color-text);">
+            <time datetime="{{ booking.start_time|date:'c' }}">{{ booking.start_time|date:"d M Y H:i" }}</time>
+            –
+            <time datetime="{{ booking.end_time|date:'c' }}">{{ booking.end_time|date:"H:i" }}</time>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <form method="post" aria-label="Confirm cancellation">
+      {% csrf_token %}
+      <div class="flex gap-3">
+        <button
+          type="submit"
+          class="btn btn-danger flex-1"
+          aria-describedby="cancel-warning"
+        >
+          Yes, cancel booking
+        </button>
+        <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-secondary flex-1 text-center">
+          Keep booking
+        </a>
+      </div>
+      <p id="cancel-warning" class="sr-only">
+        Confirming will permanently cancel your booking for {{ booking.title }}.
+      </p>
+    </form>
+  </div>
+</div>
+{% endblock %}

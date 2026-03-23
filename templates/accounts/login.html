@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-6" style="color:var(--color-text);">Log in to BookIt</h1>
+
+    <form method="post" novalidate aria-label="Login form">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div role="alert" class="alert alert-error mb-4">
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="mb-4">
+        <label
+          for="{{ form.username.id_for_label }}"
+          class="block text-sm font-medium mb-1"
+          style="color:var(--color-text);"
+        >
+          Username <span aria-hidden="true" style="color:var(--color-danger);">*</span>
+        </label>
+        {{ form.username }}
+        {% if form.username.errors %}
+        <ul role="alert" class="mt-1 list-none p-0 m-0">
+          {% for error in form.username.errors %}
+          <li class="text-xs" style="color:var(--color-danger);">{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="mb-6">
+        <label
+          for="{{ form.password.id_for_label }}"
+          class="block text-sm font-medium mb-1"
+          style="color:var(--color-text);"
+        >
+          Password <span aria-hidden="true" style="color:var(--color-danger);">*</span>
+        </label>
+        {{ form.password }}
+        {% if form.password.errors %}
+        <ul role="alert" class="mt-1 list-none p-0 m-0">
+          {% for error in form.password.errors %}
+          <li class="text-xs" style="color:var(--color-danger);">{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">
+        Log in
+      </button>
+    </form>
+
+    <p class="text-sm text-center mt-4" style="color:var(--color-text-muted);">
+      Don't have an account?
+      <a href="{% url 'register' %}" style="color:var(--color-primary);">Register</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

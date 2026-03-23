@@ -1,0 +1,207 @@
+/*
+ * theme.css — CSS custom properties for light/dark mode.
+ * All colour tokens are defined here; Tailwind utility classes
+ * reference these via the `var()` function where needed.
+ */
+
+/* ── Light mode (default) ─────────────────────────────────────────────── */
+:root {
+  --color-bg:           #f9fafb;   /* gray-50  */
+  --color-surface:      #ffffff;   /* white    */
+  --color-surface-alt:  #f3f4f6;   /* gray-100 */
+  --color-border:       #e5e7eb;   /* gray-200 */
+  --color-text:         #111827;   /* gray-900 */
+  --color-text-muted:   #6b7280;   /* gray-500 */
+  --color-primary:      #2563eb;   /* blue-600 */
+  --color-primary-hover:#1d4ed8;   /* blue-700 */
+  --color-primary-text: #ffffff;
+  --color-danger:       #dc2626;   /* red-600  */
+  --color-danger-hover: #b91c1c;   /* red-700  */
+  --color-success:      #16a34a;   /* green-600*/
+  --color-warning:      #d97706;   /* amber-600*/
+  --color-focus-ring:   #93c5fd;   /* blue-300 */
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg:           #111827;   /* gray-900 */
+  --color-surface:      #1f2937;   /* gray-800 */
+  --color-surface-alt:  #374151;   /* gray-700 */
+  --color-border:       #374151;   /* gray-700 */
+  --color-text:         #f9fafb;   /* gray-50  */
+  --color-text-muted:   #9ca3af;   /* gray-400 */
+  --color-primary:      #3b82f6;   /* blue-500 */
+  --color-primary-hover:#60a5fa;   /* blue-400 */
+  --color-primary-text: #ffffff;
+  --color-danger:       #f87171;   /* red-400  */
+  --color-danger-hover: #fca5a5;   /* red-300  */
+  --color-success:      #4ade80;   /* green-400*/
+  --color-warning:      #fbbf24;   /* amber-400*/
+  --color-focus-ring:   #1d4ed8;   /* blue-700 */
+}
+
+/* ── Base resets ──────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ── Focus visible (WCAG 2.1 AA) ─────────────────────────────────────── */
+:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Form inputs ──────────────────────────────────────────────────────── */
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+select.form-input {
+  appearance: auto;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #fff;
+}
+.btn-danger:hover {
+  background-color: var(--color-danger-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+.btn-secondary:hover {
+  background-color: var(--color-border);
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────── */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+}
+
+/* ── Status badges ────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-confirmed { background-color: #dcfce7; color: #166534; }
+.badge-cancelled { background-color: #fee2e2; color: #991b1b; }
+.badge-pending   { background-color: #fef9c3; color: #854d0e; }
+
+[data-theme="dark"] .badge-confirmed { background-color: #14532d; color: #86efac; }
+[data-theme="dark"] .badge-cancelled { background-color: #7f1d1d; color: #fca5a5; }
+[data-theme="dark"] .badge-pending   { background-color: #713f12; color: #fde68a; }
+
+/* ── Nav ──────────────────────────────────────────────────────────────── */
+.nav-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.nav-link:hover,
+.nav-link[aria-current="page"] {
+  color: var(--color-text);
+  background-color: var(--color-surface-alt);
+}
+
+/* ── Alert / message banners ──────────────────────────────────────────── */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+.alert-success { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.alert-error   { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.alert-warning { background-color: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+.alert-info    { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+
+[data-theme="dark"] .alert-success { background-color: #14532d; color: #86efac; border-color: #166534; }
+[data-theme="dark"] .alert-error   { background-color: #7f1d1d; color: #fca5a5; border-color: #991b1b; }
+[data-theme="dark"] .alert-warning { background-color: #713f12; color: #fde68a; border-color: #854d0e; }
+[data-theme="dark"] .alert-info    { background-color: #1e3a5f; color: #93c5fd; border-color: #1e40af; }
+
+/* ── Skip link (accessibility) ────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+  padding: 0.5rem 1rem;
+  z-index: 9999;
+  border-radius: 0 0 0.375rem 0;
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 0;
+}
