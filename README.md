@@ -20,7 +20,7 @@ A full-featured resource booking/reservation system built with Django 4.2, Djang
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.12
 - PostgreSQL 14+ (or SQLite for development)
 - pip
 
